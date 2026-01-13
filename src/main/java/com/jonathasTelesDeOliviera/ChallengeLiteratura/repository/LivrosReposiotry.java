@@ -20,8 +20,6 @@ public interface LivrosReposiotry extends JpaRepository<Livro, Long> {
                 LEFT JOIN FETCH l.languages
                 ORDER BY l.title
             """)
-    List<Livro> findByAutor();
-
-
+    List<Livro> findByLivro();
 }
 

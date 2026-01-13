@@ -83,6 +83,12 @@ public class Livro {
     public void setLanguages(List<String> languages) {
         this.languages = languages;
     }
+
+    @Override
+    public String toString() {
+        return
+                 title;
+    }
 }
 
 

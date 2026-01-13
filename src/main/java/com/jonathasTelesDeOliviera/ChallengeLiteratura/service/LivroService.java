@@ -47,7 +47,11 @@ public class LivroService {
 
     }
     public List<Livro> listarLivrosRegistrados() {
-        return livrosReposiotry.findByAutor();
+        return livrosReposiotry.findByLivro();
+    }
+
+    public List<DadosAutor> ListarAutorResgistrados() {
+        return autorRepository.findByAutor();
     }
 }
 

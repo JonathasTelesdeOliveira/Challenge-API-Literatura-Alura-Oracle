@@ -63,6 +63,9 @@ public class Principal {
                 case 2:
                     listarLivrosRegistrados();
                     break;
+                case 3:
+                    ListarAutorResgistrados();
+                    break;
                 case 0:
                     System.out.println("Saindo...");
                     break;
@@ -111,6 +114,22 @@ public class Principal {
                     );
             System.out.println(" Idiomas: " + livro.getLanguages());
             System.out.println(" Download: " + livro.getDownload_count());
+            System.out.println("----------------------------------------------------------------------------------\n");
+        });
+    }
+
+    private void ListarAutorResgistrados() {
+        var autor = livroService.ListarAutorResgistrados();
+        if (autor.isEmpty()) {
+            System.out.println("Nenhum autor encontrado! ");
+            return;
+        }
+        autor.forEach(a -> {
+            System.out.println("\n----------------------------------------------------------------------------------");
+            System.out.println(" Autores: " + a.getName());
+            System.out.println(" Ano de nascimento: " + a.getBirth_year());
+            System.out.println(" Ano de falecimento: " + a.getDeath_year());
+            System.out.println(" Livros: " + a.getLivros());
             System.out.println("----------------------------------------------------------------------------------\n");
         });
     }
