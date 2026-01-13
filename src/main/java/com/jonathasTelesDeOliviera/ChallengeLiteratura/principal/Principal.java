@@ -4,6 +4,7 @@ import com.jonathasTelesDeOliviera.ChallengeLiteratura.dto.LivrosDTO;
 import com.jonathasTelesDeOliviera.ChallengeLiteratura.model.Result;
 import com.jonathasTelesDeOliviera.ChallengeLiteratura.service.ConsumoApiService;
 import com.jonathasTelesDeOliviera.ChallengeLiteratura.service.ConvertDados;
+import com.jonathasTelesDeOliviera.ChallengeLiteratura.service.LivroService;
 import org.springframework.stereotype.Component;
 
 import java.util.Scanner;
@@ -11,18 +12,19 @@ import java.util.Scanner;
 @Component
 public class Principal {
 
-    private ConsumoApiService consumoApiService = new ConsumoApiService();
-    private ConvertDados convertDados = new ConvertDados();
+    private final ConsumoApiService consumoApiService;
+    private final ConvertDados convertDados;
     public String endereco = "https://gutendex.com/books/";
     private String json;
     Scanner entrada = new Scanner(System.in);
+    private LivroService livroService;
 
-    public Principal(ConsumoApiService consumoApiService, ConvertDados convertDados) {
+    public Principal(ConsumoApiService consumoApiService,
+                     ConvertDados convertDados,
+                     LivroService livroService) {
         this.consumoApiService = consumoApiService;
         this.convertDados = convertDados;
-    }
-
-    public Principal() {
+        this.livroService = livroService;
     }
 
     public void exibirMenu() {
@@ -74,8 +76,9 @@ public class Principal {
         json = consumoApiService.obterDados(
                 endereco + "?search=" + nomeLivro.replace(" ", "+"));
         System.out.println("Dados do livro: " + json);
-        LivrosDTO dto = getLivro(nomeLivro);
-        System.out.println(dto);
+        LivrosDTO dtos = getLivro(nomeLivro);
+        System.out.println(dtos);
+        livroService.salvarLivro(dtos);
     }
 
     public LivrosDTO getLivro(String nomeLivro) {
@@ -89,6 +92,16 @@ public class Principal {
                 .findFirst().orElse(null);
         return dto;
     }
+
+//    public Livro salvarLivro(LivrosDTO dto) {
+//        Livro livro = new Livro(dto);
+//
+//        for (DadosAutorDTO autorDTO : dto.authors()) {
+//            DadosAutor autor = new DadosAutor(autorDTO);
+//            livro.getAutores().add(autor);
+//        }
+//        return livrosReposiotry.save(livro);
+//    }
 }
 
 

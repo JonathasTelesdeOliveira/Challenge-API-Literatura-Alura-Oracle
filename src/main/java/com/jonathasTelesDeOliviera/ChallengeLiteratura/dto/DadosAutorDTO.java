@@ -9,3 +9,4 @@ public record DadosAutorDTO(
         @JsonProperty("birth_year") Integer birth_year,
         @JsonProperty("death_year") Integer death_year) {
 }
+

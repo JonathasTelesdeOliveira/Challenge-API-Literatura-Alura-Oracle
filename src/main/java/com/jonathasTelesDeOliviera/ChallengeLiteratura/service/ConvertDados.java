@@ -2,7 +2,9 @@ package com.jonathasTelesDeOliviera.ChallengeLiteratura.service;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import org.springframework.stereotype.Service;
 
+@Service
 public class ConvertDados implements IConvertDados {
     private ObjectMapper mapper = new ObjectMapper();
 
