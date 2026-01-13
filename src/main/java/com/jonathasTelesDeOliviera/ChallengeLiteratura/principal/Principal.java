@@ -60,7 +60,9 @@ public class Principal {
                 case 1:
                     buscarLivrosWeb();
                     break;
-
+                case 2:
+                    listarLivrosRegistrados();
+                    break;
                 case 0:
                     System.out.println("Saindo...");
                     break;
@@ -93,15 +95,25 @@ public class Principal {
         return dto;
     }
 
-//    public Livro salvarLivro(LivrosDTO dto) {
-//        Livro livro = new Livro(dto);
-//
-//        for (DadosAutorDTO autorDTO : dto.authors()) {
-//            DadosAutor autor = new DadosAutor(autorDTO);
-//            livro.getAutores().add(autor);
-//        }
-//        return livrosReposiotry.save(livro);
-//    }
+    private void listarLivrosRegistrados() {
+        var livros = livroService.listarLivrosRegistrados();
+        if (livros.isEmpty()) {
+            System.out.println("Nenhum livro encontrado! ");
+            return;
+        }
+        livros.forEach(livro -> {
+            System.out.println("\n----------------------------------------------------------------------------------");
+            System.out.println(" Título: " + livro.getTitle());
+            System.out.print(" Autores: ");
+            livro.getAutores()
+                    .forEach(dadosAutor ->
+                            System.out.println("  " + dadosAutor.getName())
+                    );
+            System.out.println(" Idiomas: " + livro.getLanguages());
+            System.out.println(" Download: " + livro.getDownload_count());
+            System.out.println("----------------------------------------------------------------------------------\n");
+        });
+    }
 }
 
 

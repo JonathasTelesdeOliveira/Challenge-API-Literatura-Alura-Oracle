@@ -1,5 +1,6 @@
 package com.jonathasTelesDeOliviera.ChallengeLiteratura.service;
 
+
 import com.jonathasTelesDeOliviera.ChallengeLiteratura.dto.DadosAutorDTO;
 import com.jonathasTelesDeOliviera.ChallengeLiteratura.dto.LivrosDTO;
 import com.jonathasTelesDeOliviera.ChallengeLiteratura.model.DadosAutor;
@@ -9,9 +10,9 @@ import com.jonathasTelesDeOliviera.ChallengeLiteratura.repository.LivrosReposiot
 import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 
 @Service
-@Transactional
 public class LivroService {
     private LivrosReposiotry livrosReposiotry;
     private AutorRepository autorRepository;
@@ -34,7 +35,7 @@ public class LivroService {
                         .findByName(autorDTO.name())
                         .orElseGet(() ->
                                 autorRepository.save(
-                                new DadosAutor(autorDTO)
+                                        new DadosAutor(autorDTO)
                                 )
                         );
                 livro.getAutores().add(autor);
@@ -44,6 +45,9 @@ public class LivroService {
             return livroSalvo;
         });
 
+    }
+    public List<Livro> listarLivrosRegistrados() {
+        return livrosReposiotry.findByAutor();
     }
 }
 
