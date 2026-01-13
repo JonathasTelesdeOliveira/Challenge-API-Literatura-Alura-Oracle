@@ -1,6 +1,7 @@
 package com.jonathasTelesDeOliviera.ChallengeLiteratura.principal;
 
 import com.jonathasTelesDeOliviera.ChallengeLiteratura.dto.LivrosDTO;
+import com.jonathasTelesDeOliviera.ChallengeLiteratura.model.Livro;
 import com.jonathasTelesDeOliviera.ChallengeLiteratura.model.Result;
 import com.jonathasTelesDeOliviera.ChallengeLiteratura.service.ConsumoApiService;
 import com.jonathasTelesDeOliviera.ChallengeLiteratura.service.ConvertDados;
@@ -82,9 +83,9 @@ public class Principal {
         var nomeLivro = entrada.nextLine();
         json = consumoApiService.obterDados(
                 endereco + "?search=" + nomeLivro.replace(" ", "+"));
-        System.out.println("Dados do livro: " + json);
         LivrosDTO dtos = getLivro(nomeLivro);
-        livroService.salvarLivro(dtos);
+        var livroSalvo = livroService.salvarLivro(dtos);
+        imprimirLivroSalvo(livroSalvo);
     }
 
     public LivrosDTO getLivro(String nomeLivro) {
@@ -97,6 +98,19 @@ public class Principal {
                         .contains(nomeLivro.toUpperCase()))
                 .findFirst().orElse(null);
         return dto;
+    }
+
+    private void imprimirLivroSalvo(Livro livro) {
+        System.out.println("\n----------------------------------------------------------------------------------");
+        System.out.println(" Título: " + livro.getTitle());
+        System.out.print(" Autores: ");
+        livro.getAutores()
+                .forEach(dadosAutor ->
+                        System.out.println("  " + dadosAutor.getName())
+                );
+        System.out.println(" Idiomas: " + livro.getLanguages());
+        System.out.println(" Download: " + livro.getDownload_count());
+        System.out.println("----------------------------------------------------------------------------------\n");
     }
 
     private void listarLivrosRegistrados() {
