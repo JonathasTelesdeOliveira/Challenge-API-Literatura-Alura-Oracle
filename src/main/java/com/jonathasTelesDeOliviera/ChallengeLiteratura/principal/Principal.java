@@ -39,14 +39,10 @@ public class Principal {
                 
                 4 - Listar autores vivos em um determinado ano
                 
+                5 - Listar livros em um determinado idioma
+                
                 0 - SAIR
                 
-                Insira o idioma para realizar a busca:
-                
-                es: espanhol
-                en: inglês
-                fr: francês
-                pt: português
                 """;
 
         var opcao = -1;
@@ -66,6 +62,12 @@ public class Principal {
                 case 3:
                     ListarAutorResgistrados();
                     break;
+                case 4:
+                    ListarAutorVivosDeterminadoAno();
+                    break;
+                case 5:
+                    listarLivrosDeterminadoIdioma();
+                    break;
                 case 0:
                     System.out.println("Saindo...");
                     break;
@@ -82,7 +84,6 @@ public class Principal {
                 endereco + "?search=" + nomeLivro.replace(" ", "+"));
         System.out.println("Dados do livro: " + json);
         LivrosDTO dtos = getLivro(nomeLivro);
-        System.out.println(dtos);
         livroService.salvarLivro(dtos);
     }
 
@@ -129,9 +130,69 @@ public class Principal {
             System.out.println(" Autores: " + a.getName());
             System.out.println(" Ano de nascimento: " + a.getBirth_year());
             System.out.println(" Ano de falecimento: " + a.getDeath_year());
-            System.out.println(" Livros: " + a.getLivros());
+            System.out.print(" Livros: ");
+            a.getLivros()
+                    .forEach(l -> {
+                        System.out.println(l.getTitle());
+                    });
             System.out.println("----------------------------------------------------------------------------------\n");
         });
+    }
+
+    public void ListarAutorVivosDeterminadoAno() {
+        System.out.println("Insira o ano que deseja pesquisar: ");
+        var deathYear = entrada.nextInt();
+        entrada.nextLine();
+
+        var autor = livroService.ListarAutorVivosDeterminadoAno(deathYear);
+        if (autor.isEmpty()) {
+            System.out.println(" [] ...vazio;\n  Nenhum autor encontrado! ");
+            return;
+        }
+
+        autor.stream()
+                .forEach(a -> {
+                    System.out.println("\n----------------------------------------------------------------------------------");
+                    System.out.println(" Autores: " + a.getName());
+                    System.out.println(" Ano de nascimento: " + a.getBirth_year());
+                    System.out.println(" Ano de falecimento: " + a.getDeath_year());
+                    System.out.print(" Livros: ");
+                    a.getLivros()
+                            .forEach(l -> {
+                                System.out.println("   " + l.getTitle());
+                            });
+                    System.out.println("----------------------------------------------------------------------------------\n");
+                });
+    }
+    public void listarLivrosDeterminadoIdioma() {
+        var exemplo = """
+                Insira o idioma para realizar a busca:
+                
+                es: espanhol
+                en: inglês
+                fr: francês
+                pt: português
+                """;
+        System.out.println(exemplo);
+        System.out.print("Idioma: ");
+        var idioma = entrada.nextLine();
+        var livros = livroService.listarLivrosDeterminadoIdioma(idioma);
+        if (livros.isEmpty()) {
+            System.out.println("Nenhum livro encontrado! ");
+            return;
+        }
+       livros.forEach(livro -> {
+           System.out.println("\n----------------------------------------------------------------------------------");
+           System.out.println(" Título: " + livro.getTitle());
+           System.out.print(" Autores: ");
+           livro.getAutores()
+                   .forEach(dadosAutor ->
+                           System.out.println("  " + dadosAutor.getName())
+                   );
+           System.out.println(" Idiomas: " + livro.getLanguages());
+           System.out.println(" Download: " + livro.getDownload_count());
+           System.out.println("----------------------------------------------------------------------------------\n");
+       });
     }
 }
 

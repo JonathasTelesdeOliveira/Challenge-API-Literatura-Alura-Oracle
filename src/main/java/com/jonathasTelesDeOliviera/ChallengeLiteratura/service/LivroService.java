@@ -53,6 +53,15 @@ public class LivroService {
     public List<DadosAutor> ListarAutorResgistrados() {
         return autorRepository.findByAutor();
     }
+
+    public List<DadosAutor> ListarAutorVivosDeterminadoAno(Integer ano) {
+        return autorRepository.findAutoresVivosNoAno(ano);
+    }
+
+    @Transactional
+    public List<Livro> listarLivrosDeterminadoIdioma(String idioma) {
+        return livrosReposiotry.findLivroPorIdioma(idioma);
+    }
 }
 
 

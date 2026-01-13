@@ -4,6 +4,7 @@ import com.jonathasTelesDeOliviera.ChallengeLiteratura.model.DadosAutor;
 import com.jonathasTelesDeOliviera.ChallengeLiteratura.model.Livro;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -21,5 +22,15 @@ public interface AutorRepository extends JpaRepository<DadosAutor, Long> {
                 ORDER BY a.name
             """)
     List<DadosAutor> findByAutor();
+
+    @Query("""
+    SELECT DISTINCT a
+    FROM DadosAutor a
+    LEFT JOIN FETCH a.livros
+    WHERE a.birth_year <= :ano
+      AND (a.death_year IS NULL OR a.death_year > :ano)
+    ORDER BY a.name
+""")
+    List<DadosAutor> findAutoresVivosNoAno(@Param("ano") Integer ano);
 
 }

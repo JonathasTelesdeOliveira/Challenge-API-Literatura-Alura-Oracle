@@ -21,5 +21,14 @@ public interface LivrosReposiotry extends JpaRepository<Livro, Long> {
                 ORDER BY l.title
             """)
     List<Livro> findByLivro();
-}
 
+    @Query("""
+                SELECT DISTINCT l
+                FROM Livro l
+                JOIN FETCH l.languages lang
+                LEFT JOIN FETCH l.autores
+                WHERE lang = :idioma
+                ORDER BY l.title
+            """)
+    List<Livro> findLivroPorIdioma(String idioma);
+}
